@@ -3,9 +3,9 @@ package kalkulator;
 public class Calculator {
 	private int state = 0;
 
-	public void add(int value){
+	public void add(int value){ //warunek + throw
 		state += value;
-	} //throws
+	}
 
 	public void mult(int value){
 		state *= value;
@@ -15,7 +15,9 @@ public class Calculator {
 		state /= value;
 	}
 
-
+	public void mod(int value){ // -2 % 3 = 1 zmienić definicje modulo na matematyczna
+		state %= value;
+	}
 	public int getState() {
 		return state;
 	}
