@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CalculatorTest {
 		// Arrange
@@ -18,7 +19,10 @@ public class CalculatorTest {
 		sut = new Calculator();
 	}
 
-																			//// DODAWANIE ////
+
+	//// DODAWANIE ////
+
+
 	@Test
 	public void testAddOne(){
 		// Act
@@ -39,6 +43,16 @@ public class CalculatorTest {
 		assertEquals(20, sut.getState());
 	}
 	@Test
+	public void testAddOverflow(){
+		sut.setState(Integer.MAX_VALUE - 1);
+		assertThrows(ArithmeticException.class, () -> sut.add(2));
+	}
+	@Test
+	public void testAddNegativeOverflow(){
+		sut.setState(Integer.MIN_VALUE + 1);
+		assertThrows(ArithmeticException.class, () -> sut.add(-2));
+	}
+	/*@Test
 	public void testAddOneToMax(){
 		sut.setState(Integer.MAX_VALUE);
 		sut.add(1);
@@ -49,9 +63,12 @@ public class CalculatorTest {
 		sut.setState(Integer.MIN_VALUE);
 		sut.add(-1);
 		assertEquals(Integer.MAX_VALUE, sut.getState());
-	}
+	} */
 
-																			////// MNOŻENIE ////
+
+	////// MNOŻENIE ////
+
+
 	@Test
 	public void testMultOneByTwo(){
 		sut.setState(1);
@@ -79,7 +96,8 @@ public class CalculatorTest {
 		sut.mult(value);
         assertEquals(0, sut.getState());
 	}
-																/// DZIELENIE ///
+
+	/// DZIELENIE ///
 
 	@ParameterizedTest
 	@ValueSource(ints = {6 , 18, 20})
@@ -89,7 +107,7 @@ public class CalculatorTest {
 		assertEquals(0, sut.getState());
 	}
 	@Test
-	public void testDivByLower(){
+	public void testDivByLess(){
 		sut.setState(10);
 		sut.div(-2);
 		assertEquals(-5, sut.getState());
@@ -115,10 +133,39 @@ public class CalculatorTest {
 		assertThrows(ArithmeticException.class,() -> sut.div(0));
 	}
 
+	//////// MODULO /////////
+
 	@Test
 	public void testModNegative(){
 		sut.setState(-2);
 		sut.mod(3);
 		assertEquals(1, sut.getState());
+	}
+	@ParameterizedTest
+	@ValueSource(ints = {5, 7, 25, 40})
+	public void testLessModGreater(int state){
+		sut.setState(state);
+		sut.mod(45);
+		assertEquals(state, sut.getState());
+	}
+	@ParameterizedTest
+	@ValueSource(ints = {5, 15, 9})
+	public void testModResultEqualsZero(int value){
+		sut.setState(45);
+		sut.mod(value);
+		assertEquals(0, sut.getState());
+	}
+	@ParameterizedTest
+	@ValueSource(ints = {2, 3, 6, 12})
+	public void testModPositive(int value){
+		sut.setState(20);
+		sut.mod(value);
+		assertEquals(20 % value, sut.getState());
+	}
+	@ParameterizedTest
+	@ValueSource(ints = {20, 47, 1})
+	public void testModZero(int state){
+		sut.setState(state);
+		assertThrows(ArithmeticException.class, () -> sut.mod(0));
 	}
 }
