@@ -168,4 +168,92 @@ public class CalculatorTest {
 		sut.setState(state);
 		assertThrows(ArithmeticException.class, () -> sut.mod(0));
 	}
+
+	///// PAMIĘĆ ////
+
+	@Test
+	public void testSaveTest(){
+		sut.setState(20);
+		sut.storeInMemory();
+		assertEquals(sut.getState(), sut.getMemoryValue());
+		assertEquals(20, sut.getState());
+	}
+
+	@Test
+	public void testRecallMemory(){
+		sut.setState(20);
+		sut.storeInMemory();
+		sut.setState(10);
+		sut.recallMemory();
+		assertEquals(sut.getMemoryValue(), sut.getState());
+	}
+
+	@ParameterizedTest
+	@ValueSource(ints = {2, 20, 44})
+	public void testAddToValueInMemoryTwice(int state){
+		sut.setState(state);
+		sut.addToValueInMemory();
+		sut.addToValueInMemory();
+		assertEquals((sut.getState()*2), sut.getMemoryValue());
+		assertEquals(state, sut.getState());
+	}
+	@Test
+	public void testAddToValueInMemoryOverflow(){
+		sut.setState(Integer.MAX_VALUE);
+		sut.storeInMemory();
+		sut.setState(1);
+		assertThrows(ArithmeticException.class, () -> sut.addToValueInMemory());
+
+	}
+	@ParameterizedTest
+	@ValueSource(ints = {2, 5, 25})
+	public void testMultMemory(int state){
+	sut.setState(state);
+	sut.storeInMemory();
+	sut.multValueInMemory();
+	assertEquals((state * state), sut.getMemoryValue());
+	assertEquals(state, sut.getState());
+	}
+	@ParameterizedTest
+	@ValueSource(ints = {1, 2, 5, 10})
+	public void testDivMemory(int state){
+		sut.setState(state);
+		sut.storeInMemory();
+		sut.divValueInMemory();
+		assertEquals(1, sut.getMemoryValue());
+	}
+	@Test
+	public void testDivBy0Memory(){
+		sut.setState(5);
+		sut.storeInMemory();
+		sut.setState(0);
+		assertThrows(ArithmeticException.class, () -> sut.divValueInMemory());
+	}
+	@Test
+	public void testModMemory(){
+		sut.setState(25);
+		sut.storeInMemory();
+		sut.setState(14);
+		sut.modValueInMemory();
+		assertEquals(11, sut.getMemoryValue());
+
+	}
+	@Test
+	public void testModMemoryError(){
+		sut.setState(14);
+		sut.storeInMemory();
+		sut.setState(0);
+		assertThrows(ArithmeticException.class, () -> sut.modValueInMemory());
+	}
+	@Test
+	public void testMultipleStateOperationsThenMemory(){
+		sut.setState(45);
+		sut.storeInMemory();
+		sut.add(45);
+		sut.div(5);
+		sut.mult(-3);
+		sut.addToValueInMemory();
+		assertEquals(-9, sut.getMemoryValue());
+	}
 }
+

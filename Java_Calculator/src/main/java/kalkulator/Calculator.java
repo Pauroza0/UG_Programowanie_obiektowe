@@ -2,7 +2,7 @@ package kalkulator;
 
 public class Calculator {
 	private int state = 0;
-	private int memory = 0;
+	private int memory = 0; ///może zamienić na klase
 
 	public void add(int value){ //warunek + throw
 		if((value > 0 && state > Integer.MAX_VALUE - value) || (value < 0 && state < Integer.MIN_VALUE - value)){
