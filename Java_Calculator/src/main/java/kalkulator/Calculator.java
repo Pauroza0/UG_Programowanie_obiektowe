@@ -2,9 +2,9 @@ package kalkulator;
 
 public class Calculator {
 	private int state = 0;
-	private int memory = 0; ///może zamienić na klase
+	private int memory = 0;
 
-	public void add(int value){ //warunek + throw
+	public void add(int value){
 		if((value > 0 && state > Integer.MAX_VALUE - value) || (value < 0 && state < Integer.MIN_VALUE - value)){
 			throw new ArithmeticException("Przepełnienie");
 		}
@@ -22,7 +22,7 @@ public class Calculator {
 		state /= value;
 	}
 
-	public void mod(int value){ ////////////przez 0
+	public void mod(int value){
 		if(value == 0){
 			throw new ArithmeticException("Modulo przez 0");
 		}
@@ -36,7 +36,6 @@ public class Calculator {
 		this.state = state;
 	}
 
-	/// STAN ////
 	public void storeInMemory(){
 		memory = state;
 	}
@@ -50,7 +49,6 @@ public class Calculator {
 		state = memory;
 	}
 	public void addToValueInMemory(){
-		int value = state;
 		if((state > 0 && memory > Integer.MAX_VALUE - state) || (state < 0 && memory < Integer.MIN_VALUE - state)){
 			throw new ArithmeticException("Przepełnienie");
 		}
