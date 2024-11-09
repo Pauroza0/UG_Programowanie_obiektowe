@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RPNCalculatorTest {
     RPNCalculator rpnCalculator = new RPNCalculator();
+
     @ParameterizedTest
     @CsvSource({
             "'5 3 +', 8",
@@ -23,11 +24,12 @@ public class RPNCalculatorTest {
             "'8 2 ^ 3 / 5 +', 26",
             "'20 7 % 7 / 2 + 5 ^', 32"
     })
-    public void testShouldCalculateExpressionCorrectly(String expression, int expectedResult){
+    public void testShouldCalculateExpressionCorrectly(String expression, int expectedResult) {
         int result = rpnCalculator.calculateExpression(expression);
 
         assertEquals(expectedResult, result);
     }
+
     @ParameterizedTest
     @CsvSource({
             "'5 0 /', 'Dzielenie przez 0'",
@@ -35,11 +37,12 @@ public class RPNCalculatorTest {
             "'4 0 %', 'Modulo 0'",
             "'4 2 + 2 * 20 5 % %', 'Modulo 0'"
     })
-    public void testModuloOrDivisionByZeroThrowsException(String expression, String expectedMessage){
+    public void testModuloOrDivisionByZeroThrowsException(String expression, String expectedMessage) {
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> rpnCalculator.calculateExpression(expression));
 
         assertEquals(expectedMessage, thrown.getMessage());
     }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "d 3 +",
@@ -48,7 +51,7 @@ public class RPNCalculatorTest {
             "23d 3 +",
             "23 2 ++"
     })
-    public void testInvalidCharacterInputThrowsException(String expression){
+    public void testInvalidCharacterInputThrowsException(String expression) {
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> rpnCalculator.calculateExpression(expression));
 
         assertEquals("Niedozwolony znak", thrown.getMessage());
@@ -61,18 +64,19 @@ public class RPNCalculatorTest {
             "+ +",
             "2 2"
     })
-    public void testExpressionTooShortOrTooLittleOperands(String expression){
+    public void testExpressionTooShortOrTooLittleOperands(String expression) {
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> rpnCalculator.calculateExpression(expression));
 
         assertEquals("Za mało operandów na początku ciągu", thrown.getMessage());
     }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "2 2 + 2",
             "4 5 5 6 +",
             "4 5 6 7 8 + / +"
     })
-    public void testTooLittleOperationsToCalculate(String expression){
+    public void testTooLittleOperationsToCalculate(String expression) {
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> rpnCalculator.calculateExpression(expression));
 
         assertEquals("Niepoprawny stosunek operatorów do operandów", thrown.getMessage());
@@ -80,11 +84,11 @@ public class RPNCalculatorTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        "2 2 + +",
-        "2 3 4 + - +",
-        "2 3 + 4 * /"
+            "2 2 + +",
+            "2 3 4 + - +",
+            "2 3 + 4 * /"
     })
-    public void testTooMuchOperations(String expression){
+    public void testTooMuchOperations(String expression) {
         IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> rpnCalculator.calculateExpression(expression));
 
         assertEquals("Za dużo operatorów, stos jest pusty", thrown.getMessage());

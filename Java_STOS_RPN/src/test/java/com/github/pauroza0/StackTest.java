@@ -7,13 +7,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StackTest {
-	Stack stack = new Stack();
+	Stack<String> stack = new Stack<>();
 	@Test
 	public void testPopAfterPush() {
 		stack.push("napis");
 		String result = stack.pop();
 
-		assertEquals("napis", "napis");
+		assertEquals("napis", result);
 	}
 	@Test
 	public void testPopAfterPushTwice_ShouldReturnSecondValue(){
